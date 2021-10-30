@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SYNC - OVER - NETWORK</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- header -->
+    <header>SYNC - OVER - NETWORK</header>
+    <!-- main -->
+    <main>
+      <!-- mainBox - Contains input form and output box -->
+      <div class="mainBox">
+        <div class="userInBox">
+          <!-- Title -->
+          <h2 class="title">Paste your clipboard</h2>
+          <!-- Add Form -->
+          <form action="/" method="get" id="pasteForm">
+            <input
+              type="text"
+              name="clipText"
+              id="clipTextID"
+              autocomplete="off"
+            />
+            <button type="submit" id="addBtn">ADD</button>
+          </form>
+        </div>
+        <div class="outBox">
+          <!-- Title -->
+          <h2 class="title">Your clipboard shared over network</h2>
+          <div id="clipBox">
+            <!-- dynamically added pastes -->
+            
+            <!-- <div id="setID()" class="paste">
+              <div class="contentBox">${message}</div>
+              <div class="removeBtn btn">Remove</div>
+            </div> -->
+          
+          </div>
+        </div>
+      </div>
+
+      <!-- Side panel -->
+      <div class="box2">
+        <!-- Contains currently connected users -->
+        <div class="usersBox">
+          <h2 class="title">Currently connected users</h2>
+          <!-- Dynamically show connect users -->
+          <div class="users">
+            <h2 class="user">USER1</h2>
+          </div>
+        </div>
+        <!-- start server button -->
+        <div id="syncBtn" class="sync">Start SYNC</div>
+        <div id="cleanBtn" class="sync">Clean</div>
+        <!-- guide -->
+        <div class="guideBox">
+          <h2 class="title">HOW TO USE?</h2>
+          <p class="desc">
+            Start the server and go to the server's IP address to connect the
+            devices. Do not paste before connecting the devices; else, the
+            pastes will not appear on other devices. <br />
+            <br />To copy the paste's content, simply click on it, and it will
+            be transferred to your device's clipboard.<br />
+            <br />To retrieve the server's IP address, go to the connected
+            devices tab and click on the server's name.
+          </p>
+        </div>
+      </div>
+    </main>
+    <!-- footer -->
+    <footer>Made by thunder</footer>
+  </body>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</html>
