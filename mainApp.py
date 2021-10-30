@@ -62,7 +62,7 @@ def getData():
 def add_paste():
     if request.method == "POST":
         paste = request.json
-        print(paste)
+        data = readFile()
         data["pastes"][paste["id"]] = paste["paste"]
         write2file(data)
         msg = {'message': 'Created', 'code': 'SUCCESS'}

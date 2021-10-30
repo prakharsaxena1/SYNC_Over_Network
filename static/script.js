@@ -25,33 +25,34 @@ let clipBox = document.getElementById("clipBox"); // pastes container
 let syncBtn = document.getElementById("syncBtn"); // btn to start server
 let cleanBtn = document.getElementById("cleanBtn"); // btn to remove all the pastes
 // Global
-let count = 0
 
 // Functions
 // set ID function
 async function setID() {
     const response = await fetch("http://127.0.0.1:5000/getID");
     let data = await response.json();
-    return data.value
+    return data.value;
 }
 
 // API function
-function callAPI(apiName, message = "", eleId = "") {
+async function callAPI(apiName, message = "", eleId = "") {
     if ((message !== "" || message != null) && (apiName === "add")) {
-        fetch("http://127.0.0.1:5000/add_paste", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                "id": setID(),
-                "paste": message
+        const id = await setID();
+        try {
+            fetch("http://127.0.0.1:5000/add_paste", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    "id": id,
+                    "paste": message
+                })
             })
-        })
-            .then(response => response.json())
-            .then(data => console.log('Success:', data))
-            .catch((error) => console.error('Error:', error));
+        } catch (error) {
+            console.error('Error:', error);
+        }
 
         let paste = `<div id="${data['id']}" class="paste">
                 <div class="contentBox">${message}</div>
@@ -100,6 +101,7 @@ pasteForm.addEventListener('submit', function (e) {
     let message = clipTextID.value;
     // Calling add paste function
     callAPI("add", message = message)
+    clipTextID.value = "";
 });
 
 syncBtn.addEventListener("click", function (e) {
