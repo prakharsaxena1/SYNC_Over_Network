@@ -24,7 +24,7 @@ def readFile():
 if not os.path.exists(FILE_LOCATION):
     os.mkdir(FILE_LOCATION)
 if not os.path.exists(file_path):
-    data = {"count": 0, "pastes": {}}
+    data = {"count": 0, "pastes": []}
     with open(file_path, 'w') as f:
         f.write(json.dumps(data))
 else:
@@ -34,7 +34,6 @@ else:
 # App
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "ThunderisaGOD"
-data = readFile()
 
 # Page routes
 
@@ -63,7 +62,8 @@ def add_paste():
     if request.method == "POST":
         paste = request.json
         data = readFile()
-        data["pastes"][paste["id"]] = paste["paste"]
+        # data["pastes"][paste["id"]] = paste["paste"]
+        data["pastes"].append(paste)
         write2file(data)
         msg = {'message': 'Created', 'code': 'SUCCESS'}
         return make_response(jsonify(msg), 201)
@@ -75,8 +75,13 @@ def add_paste():
 @app.route("/remove_paste", methods=["POST"])
 def remove_paste():
     if request.method == "POST":
+        data = readFile()
         paste = request.json
-        data.pop(paste["id"])
+        for i in data["pastes"]:
+            if i["id"] == paste["id"]:
+                data["pastes"].remove(i)
+                data["count"] -= 1
+                break
         write2file(data)
         return redirect("/")
     msg = {'message': 'Got a "get" request', 'code': 'FAILED'}
@@ -86,10 +91,10 @@ def remove_paste():
 # Removes all the pastes from the list
 @app.route("/clean", methods=["GET"])
 def clean():
-    data = {"count":0,"pastes":{}}
+    data["count"] = 0
+    data["pastes"] = []
     write2file(data)
     return redirect("/")
-
 
 #
 @app.route("/start_sync", methods=["GET"])

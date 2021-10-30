@@ -1,29 +1,28 @@
 // ===================================== Main script file
-function getData() {
-    return fetch("http://127.0.0.1:5000/data")
-        .then(response => response.json())
-        .then(data => console.log(data));
-}
 
-function renderMsg() {
-    return `<div id="${data['id']}" class="paste">
-                <div class="contentBox">${message}</div>
-                <div class="removeBtn btn">Remove</div>
-                </div>`
-}
-
-let data = {}
-window.onload = function () {
-    data = getData()
-
+window.onload = async function () {
+    const response = await fetch("http://127.0.0.1:5000/data");
+    let data = await response.json();
+    let pastes = data.pastes;
+    for (const i of pastes) {
+        let paste = `<div id="${i.id}" class="paste">
+        <div class="contentBox">${i.paste}</div>
+        <div class="removeBtn btn" onclick="removePaste(this)">Remove</div>
+        </div>`;
+        
+        clipBox.innerHTML += paste;
+    }
 };
-
+function removePaste(obj) {
+    callAPI("remove_single", message="" ,eleId=obj.parentNode.id)
+}
 // Variables
 let pasteForm = document.getElementById("pasteForm"); // form element
 let clipTextID = document.getElementById("clipTextID"); // form input
 let clipBox = document.getElementById("clipBox"); // pastes container
 let syncBtn = document.getElementById("syncBtn"); // btn to start server
 let cleanBtn = document.getElementById("cleanBtn"); // btn to remove all the pastes
+
 // Global
 
 // Functions
@@ -46,7 +45,7 @@ async function callAPI(apiName, message = "", eleId = "") {
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    "id": id,
+                    "id": `pasteID_${id}`,
                     "paste": message
                 })
             })
@@ -54,12 +53,13 @@ async function callAPI(apiName, message = "", eleId = "") {
             console.error('Error:', error);
         }
 
-        let paste = `<div id="${data['id']}" class="paste">
+        let paste = `<div id="pasteID_${id}" class="paste">
                 <div class="contentBox">${message}</div>
-                <div class="removeBtn btn">Remove</div>
+                <div class="removeBtn btn" onclick="removePaste(this)">Remove</div>
                 </div>`;
 
         clipBox.innerHTML += paste;
+
     } else if ((message === "" || message == null) && (apiName === "add")){
         alert("Kuch likh toh le")
     }
@@ -74,17 +74,11 @@ async function callAPI(apiName, message = "", eleId = "") {
                 "id": eleId,
             })
         })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch((error) => console.error('Error:', error));
         
         document.getElementById(eleId).remove();
     }
     if (apiName === "remove_all") {
         fetch("http://127.0.0.1:5000/clean")
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch((error) => console.error('Error:', error));
         location.reload();
     }
     if (apiName === "startSync") {
@@ -94,6 +88,7 @@ async function callAPI(apiName, message = "", eleId = "") {
 
 
 // EVENT LISTENERS
+
 
 // Handling form event to get data from input
 pasteForm.addEventListener('submit', function (e) {
@@ -111,3 +106,4 @@ syncBtn.addEventListener("click", function (e) {
 cleanBtn.addEventListener("click", function (e) {
     callAPI("remove_all")
 });
+
