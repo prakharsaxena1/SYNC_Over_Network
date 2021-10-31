@@ -70,7 +70,6 @@ def add_paste():
     msg = {'message': 'Got a "get" request', 'code': 'FAILED'}
     return make_response(jsonify(msg), 201)
 
-
 # remove data from file
 @app.route("/remove_paste", methods=["POST"])
 def remove_paste():
@@ -104,4 +103,4 @@ def startSYNC():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

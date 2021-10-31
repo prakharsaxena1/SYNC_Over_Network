@@ -10,6 +10,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style_media.css') }}"
+    />
   </head>
   <body>
     <!-- header -->
@@ -49,28 +53,23 @@
 
       <!-- Side panel -->
       <div class="box2">
-        <!-- Contains currently connected users -->
-        <div class="usersBox">
-          <h2 class="title">Currently connected users</h2>
-          <!-- Dynamically show connect users -->
-          <div class="users">
-            <h2 class="user">USER1</h2>
-          </div>
+        <!-- Buttons container -->
+        <div class="btnContainer">
+          <!-- Start server button -->
+          <div id="syncBtn" class="controls">SYNC</div>
+          <!-- Clean clipboard button -->
+          <div id="cleanBtn" class="controls">Clean</div>
         </div>
-        <!-- start server button -->
-        <div id="syncBtn" class="sync">Start SYNC</div>
-        <div id="cleanBtn" class="sync">Clean</div>
-        <!-- guide -->
+
+        <!-- Guide -->
         <div class="guideBox">
           <h2 class="title">HOW TO USE?</h2>
           <p class="desc">
-            Start the server and go to the server's IP address to connect the
-            devices. Do not paste before connecting the devices; else, the
-            pastes will not appear on other devices. <br />
-            <br />To copy the paste's content, simply click on it, and it will
-            be transferred to your device's clipboard.<br />
-            <br />To retrieve the server's IP address, go to the connected
-            devices tab and click on the server's name.
+            This is a quick tutorial on how to use the SYNC - Over - Network app.</br>Open the webpage in the devices with which you wish to share your clipboard after running the server. 
+Now, on the sending device, paste text into the input one by one, and then hit sync on the receiving device.</br>The "SYNC" button just syncs the clipboard with the most recent sender.</br>
+Simply click the "clean" button to remove all of the pastes. </br>
+To copy the message from the pastes, click on the pastes and the text will be copied to your device. </br>
+To remove a single paste from the clipboard and press sync on the receiving device.</br>
           </p>
         </div>
       </div>
